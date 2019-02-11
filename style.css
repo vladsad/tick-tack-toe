@@ -1,0 +1,59 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#play-field {
+  border: 5px solid #808080;
+  box-sizing: border-box;
+  width: 500px;
+  height: 500px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.cell {
+  border: 5px solid #808080;
+  position: relative;
+}
+
+.cell:hover {
+  background: #d8d8d8;
+}
+
+.cell--disable {
+  pointer-events: none;
+  border: 5px solid #808080;
+  position: relative;
+}
+
+.cell--x::before,
+.cell--x::after {
+  background: red;
+  content: "";
+  height: 10px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  transform: rotate(45deg);
+  top: 50%;
+}
+
+.cell--x::after {
+  transform: rotate(-45deg);
+}
+
+.cell--o::before {
+  content: "";
+  height: 60%;
+  width: 60%;
+  position: absolute;
+  left: 20%;
+  top: 20%;
+  border-radius: 50%;
+  border: 10px solid #0031ff;
+  box-sizing: border-box;
+}

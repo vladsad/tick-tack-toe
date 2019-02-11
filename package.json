@@ -1,0 +1,29 @@
+{
+  "name": "tick-tack-toe",
+  "version": "1.0.0",
+  "description": "Simple tick-tack-toe. Html + js",
+  "keywords": [
+    "tick-tack-toe"
+  ],
+  "scripts": {
+    "build": "cross-env NODE_ENV=production babel src --out-dir dist --source-maps inline"
+  },
+  "author": "Vladislav Sadretdinov",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.5",
+    "babel-eslint": "^10.0.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "IE 11",
+    "Firefox ESR"
+  ]
+}
