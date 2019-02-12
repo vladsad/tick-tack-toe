@@ -1,7 +1,7 @@
 {
   "name": "tick-tack-toe",
-  "version": "1.0.0",
-  "description": "Simple tick-tack-toe. Html + js",
+  "version": "1.1.0",
+  "description": "Simple tick-tack-toe. htm/canvas/js",
   "keywords": [
     "tick-tack-toe"
   ],

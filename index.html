@@ -3,13 +3,26 @@
 <head>
   <meta charset="utf-8">
   <title>tick-tack-toe</title>
+  <style>
+    body {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      height: 100vh;
+    }
+    #canvas {
+      background-color: lightcyan;
+    }
+  </style>
 </head>
 <body>
-  <table id="play-field" width="500" height="500">
-    <tbody></tbody>
-  </table>
-  <link rel="stylesheet" href="normalize.css">
-  <link rel="stylesheet" href="style.css">
+  <canvas id="canvas" width="510" height="510"></canvas>
   <script src="dist/script.js"></script>
 </body>
 </html>
