@@ -203,8 +203,8 @@ const runGame = () => {
     }
 
     const pos = {
-      x: e.layerX,
-      y: e.layerY,
+      x: e.clientX - canvas.offsetLeft,
+      y: e.clientY - canvas.offsetTop,
     };
 
     const player = Player.whosStep();
