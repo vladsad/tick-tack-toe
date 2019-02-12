@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas');
 const [width, height] = [canvas.width, canvas.height];
 const ctx = canvas.getContext('2d');
 
-const PLAYFIELD_SIZE = 5;
+const PLAYFIELD_SIZE = 3;
 
 const cellWidth = width / PLAYFIELD_SIZE;
 const cellHeight = height / PLAYFIELD_SIZE;
