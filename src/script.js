@@ -1,38 +1,29 @@
 const playField = document.getElementById('play-field');
-// const [width, height] = [playField.width, playField.height];
-
 const PLAYFIELD_SIZE = 3;
-
-// const cellWidth = width / PLAYFIELD_SIZE;
-// const cellHeight = height / PLAYFIELD_SIZE;
-
-// const row = playField.insertRow(-1);
-// var cell1 = row.insertCell(0);
-// var cell2 = row.insertCell(1);
-// cell1.innerHTML = "NEW CELL1";
-// cell2.innerHTML = "NEW CELL2";
+const gameMatrix = new Array(PLAYFIELD_SIZE);
 
 const drawGameField = () => {
-  for (let i = 0, id = 0; i < PLAYFIELD_SIZE; i += 1) {
+  for (let i = 0; i < PLAYFIELD_SIZE; i += 1) {
     const row = playField.insertRow(-1);
     for (let j = 0; j < PLAYFIELD_SIZE; j += 1) {
       const cell = row.insertCell(j);
       cell.setAttribute('class', 'cell');
-      cell.setAttribute('id', id);
+      cell.setAttribute('data-row', i);
+      cell.setAttribute('data-column', j);
       cell.innerHTML = '';
-      id += 1;
     }
+    gameMatrix[i] = new Array(PLAYFIELD_SIZE);
   }
 };
 
-// const cells = document.getElementsByClassName('cell');
+const players = [];
+let steps = 0;
 
-// Array.from(cells).forEach((cell) => {
-//   cell.addEventListener('click', (test) => {
-//     console.log(test);
-//     cell.setAttribute('class', 'cell cell--x');
-//   });
-// });
+const whosStep = () => {
+  const index = steps % players.length;
+  steps += 1;
+  return players[index];
+};
 
 class Player {
   constructor(name, typeOfCell) {
@@ -40,95 +31,92 @@ class Player {
     this.typeOfCell = typeOfCell;
   }
 
-  // drawCell() {
-  //   switch (this.typeOfCell) {
-  //     case 'x':
-  //       return 'cell--disable cell--x';
-  //     case 'o':
-  //       return 'cell--disable cell--o';
-  //     default:
-  //       return 'cell';
-  //   }
-  // }
+  static drawMark(player, cell) {
+    gameMatrix[cell.getAttribute('data-row')][cell.getAttribute('data-column')] = player.typeOfCell;
+    return `cell--disable  ${player.typeOfCell}`;
+  }
 
-  static draw(step) {
-    switch (step) {
-      case 0:
-        return 'cell--disable cell--x';
-      case 1:
-        return 'cell--disable cell--o';
-      default:
-        return 'cell';
+  static checkForWin(player) {
+    let winCombinationCells = [];
+
+    // horizontals
+    for (let i = 0; i < PLAYFIELD_SIZE; i += 1) {
+      for (let j = 0; j < PLAYFIELD_SIZE; j += 1) {
+        if (gameMatrix[i][j] === player.typeOfCell) {
+          winCombinationCells.push({ row: i, column: j });
+        } else {
+          winCombinationCells = [];
+          break;
+        }
+      }
+      if (winCombinationCells.length === PLAYFIELD_SIZE) {
+        return winCombinationCells;
+      }
     }
+
+    // verticals
+    for (let i = 0; i < PLAYFIELD_SIZE; i += 1) {
+      for (let j = 0; j < PLAYFIELD_SIZE; j += 1) {
+        if (gameMatrix[j][i] === player.typeOfCell) {
+          winCombinationCells.push({ row: j, column: i });
+        } else {
+          winCombinationCells = [];
+          break;
+        }
+      }
+      if (winCombinationCells.length === PLAYFIELD_SIZE) {
+        return winCombinationCells;
+      }
+    }
+
+
+    // diagonals
+    // work nice with only main diagonals ( not even PLAYFIELD_SIZE )
+    for (let i = 0; i < PLAYFIELD_SIZE; i += 1) {
+      if (gameMatrix[i][i] === player.typeOfCell) {
+        winCombinationCells.push({ row: i, column: i });
+      }
+    }
+    if (winCombinationCells.length === PLAYFIELD_SIZE) {
+      return winCombinationCells;
+    }
+    winCombinationCells = [];
+    for (let i = PLAYFIELD_SIZE - 1, j = 0; i >= 0 && j < PLAYFIELD_SIZE; i -= 1, j += 1) {
+      if (gameMatrix[i][j] === player.typeOfCell) {
+        winCombinationCells.push({ row: i, column: j });
+      }
+    }
+    if (winCombinationCells.length === PLAYFIELD_SIZE) {
+      return winCombinationCells;
+    }
+
+    return [];
   }
 }
 
-let steps = 0;
 const player1 = new Player('Player 1', 'cell--x');
+players.push(player1);
 const player2 = new Player('Player 2', 'cell--o');
+players.push(player2);
 
 const gameStart = () => {
   const cells = document.getElementsByClassName('cell');
   Array.from(cells).forEach((cell) => {
     cell.addEventListener('click', () => {
-      // const typeOfCell = steps % 2 === 0 ? player1.drawCell() : player2.drawCell();
-      // cell.setAttribute('class', typeOfCell);
-      // cell.setAttribute('class', player.step.drawCell());
-      const whoseStep = steps % 2;
-      cell.setAttribute('class', Player.draw(whoseStep));
-      steps += 1;
-
-      // if (steps >= PLAYFIELD_SIZE * 2 - 1) {
-      //   checkForWin(whoseStep) === true ?
-      // }
+      const player = whosStep();
+      cell.setAttribute('class', Player.drawMark(player, cell));
+      if (steps >= PLAYFIELD_SIZE * 2 - 1) {
+        const winCells = Player.checkForWin(player, cell);
+        if (winCells.length !== 0) {
+          for (let i = 0; i < winCells.length; i += 1) {
+            const winCell = winCells[i];
+            document.querySelector(`[data-row="${winCell.row}"][data-column="${winCell.column}"]`).className += ' cell--win';
+          }
+        }
+      }
     });
   });
 };
 
-// const checkForWin = (whoseStep) => {
-//   switch(whoseStep)
-// };
-
-
 drawGameField();
 gameStart();
-
-// test.onclick = function () {
-//   for (const x of theText) {
-//     x.classList.toggle('colorized');
-//   }
-// };
-
-// const tealToggle = ({ target }) => console.log(target);
-
-// test.onclick = tealToggle;
-
-// test.onclick((event) => {
-//   console.log(event);
-// });
-
-// canvas.onclick = (event) => {
-//   if (event.region) {
-//     console.log(`You clicked ${event.region}`);
-//   }
-// };
-
-// for (let i = 0, size = cellWidth; i < GAME_FIELD_SZIE - 1; i += 1) {
-//   ctx.strokeStyle = '#808080';
-//   ctx.lineWidth = 5;
-//   ctx.beginPath();
-//   ctx.moveTo(size, 0);
-//   ctx.lineTo(size, height);
-//   ctx.stroke();
-//   size += cellWidth;
-// }
-
-// for (let i = 0, size = cellHeight; i < GAME_FIELD_SZIE - 1; i += 1) {
-//   ctx.strokeStyle = '#808080';
-//   ctx.lineWidth = 5;
-//   ctx.beginPath();
-//   ctx.moveTo(0, size);
-//   ctx.lineTo(width, size);
-//   ctx.stroke();
-//   size += cellHeight;
-// }
